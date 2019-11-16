@@ -18,6 +18,7 @@ public class Serializer {
 	public Document serialize(Object obj) {
 		//classObject = obj.getClass();
 		serializeObject(obj, obj.getClass());
+		id = map.size();
 		//Field[] fields = classObject.getDeclaredFields();
 		return doc;
 	}
@@ -26,7 +27,7 @@ public class Serializer {
 	public void serializeObject(Object obj, Class classObject) {
 		System.out.println("Object name: " + obj.getClass().getName());
 		//System.out.println("Class name: " + classObject.getName());
-		id = map.size();
+		
 		if (!map.containsKey(obj)) {
 			//System.out.println("The object is not visited");
 			//System.out.println(map.containsKey(id));
@@ -68,7 +69,12 @@ public class Serializer {
 						//map.put(id, elementReference);
 						if (elementReference != null) {
 							Element arrayElementReference = new Element("refrence");
-							id = map.size();
+							//id = map.size();
+							if (!map.containsKey(elementReference)) {
+								id = map.size();
+							} else {
+								id = map.get(elementReference);
+							}
 							arrayElementReference.setText(String.valueOf(id));
 					
 							objectElement.addContent(arrayElementReference);
@@ -115,7 +121,11 @@ public class Serializer {
 				objectElement.addContent(fieldElement);
 			} else {
 				Element reference = new Element("reference");
-				id = map.size();
+				if (!map.containsKey(fieldValueObject)) {
+					id = map.size();
+				} else {
+					id = map.get(fieldValueObject);
+				}
 				//map.put(id, fieldValueObject);
 				reference.setText(String.valueOf(id));
 				fieldElement.addContent(reference);

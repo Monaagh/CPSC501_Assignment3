@@ -76,7 +76,7 @@ public class Receiver {
 			SAXBuilder saxBuilder = new SAXBuilder();
 			Document document = saxBuilder.build(inputFile);
 			Object object = new Deserializer().deserialize(document);
-			new Inspector().inspect(object, false);
+			new Inspector().inspect(object, true);
 			
 		} catch (Exception e) {
 			System.out.println(e);

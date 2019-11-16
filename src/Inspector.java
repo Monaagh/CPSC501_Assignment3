@@ -4,8 +4,10 @@
  */
 
 import java.lang.reflect.*;
+import java.util.HashMap;
 
 public class Inspector {
+	HashMap<Object, Boolean> map = new HashMap<Object, Boolean> ();
 
     public void inspect(Object obj, boolean recursive) {
         Class c = obj.getClass();
@@ -14,43 +16,50 @@ public class Inspector {
 
     //inspect classes
     private void inspectClass(Class c, Object obj, boolean recursive, int depth) {
-
+    	//map.put(obj, true);
     	int d = depth;
     	int count = 0;
     	int dep = depth;
+    	//printIndent(d);
     	
-    	
-	    if (c.equals(Object.class)) {
-	    	count++;
-  		}
+    	//if (!map.containsKey(c)) {
+    	map.put(obj, true);
+    	if (c.equals(Object.class)) {
+    		count++;
+   		}
 
-		System.out.println();
-		printIndent(d);
-		System.out.println("***************Inspection for Class '" + c.getName()+ "***************\n");
+   		System.out.println();
+   		printIndent(d);
+   		System.out.println("***************Inspection for Class '" + c.getName()+ "***************\n");
 	
-	    getClassName(c, d);
+   		getClassName(c, d);
 	    		  		
-	  	if (count != 1) {
-	  		inspectSuperClass(c, obj, recursive, dep);
-	    }
+    	if (count != 1) {
+   			inspectSuperClass(c, obj, recursive, dep);
+   		}
 	    		
-	  	//printIndent(d);
-	    //System.out.println("***************Continue Inspection for Class '" + c.getName()+ "***************\n");
+    		//printIndent(d);
+    		//System.out.println("***************Continue Inspection for Class '" + c.getName()+ "***************\n");
 	    		
-	    inspectInterface(c, obj, d, recursive);
-	    inspectConstructor(c, d);
-	    inspectMethod(c,d);
-	    inspectField(c, obj, d, recursive);
+   		inspectInterface(c, obj, d, recursive);
+   		inspectConstructor(c, d);
+   		inspectMethod(c,d);
+    	inspectField(c, obj, d, recursive);
 	    
-	    //handle array objects
-	    if (c.isArray()) {
-	    	inspectArray(c, obj, recursive, depth, d);   					
-	    }
+   		//handle array objects
+   		if (c.isArray()) {
+   			inspectArray(c, obj, recursive, depth, d);   					
+   		}
 	    
-	    System.out.println();
-		printIndent(d);
-		System.out.println("***************Finished Inspection for Class '" + c.getName()+ "***************\n");
-		d++;
+   		System.out.println();
+    	printIndent(d);
+   		System.out.println("***************Finished Inspection for Class '" + c.getName()+ "***************\n");
+   		d++;
+ 
+    
+    //else{
+    	//	System.out.println("This object has been visited before!");
+    	//}
     }
 
     
@@ -82,18 +91,23 @@ public class Inspector {
 					
 					Class arrayElementClass = arrayElement.getClass();
 					
-					if (!arrayElementClass.equals(java.lang.Character.class)) {
+					if (!map.containsKey(arrayElement)) {
+						if (!arrayElementClass.equals(java.lang.Character.class)) {
 					
-						System.out.println();
-						printIndent(d);
-						System.out.println("***************Inspection for element " + i + ": "+ arrayElementClass.getName() + " with type "
-						+ arrayElementClass + " ***************");
+							System.out.println();
+							printIndent(d);
+							System.out.println("***************Inspection for element " + i + ": "+ arrayElementClass.getName() + " with type "
+									+ arrayElementClass + " ***************");
 						
-						inspectClass(arrayElementClass, arrayElement, recursive, d);
+							inspectClass(arrayElementClass, arrayElement, recursive, d);
 						
-						System.out.println();
+							System.out.println();
+							printIndent(d);
+							System.out.println("***************Finished Inspection for element " + i + ": "+ arrayElement.getClass().getName()+ "***************\n");
+						}
+					} else {
 						printIndent(d);
-						System.out.println("***************Finished Inspection for element " + i + ": "+ arrayElement.getClass().getName()+ "***************\n");
+						System.out.println("This object has been visited before!");
 					}
 				}
 			}
@@ -289,15 +303,20 @@ public class Inspector {
 			
 			//recursion on object fields
 			if (recursive) {
-				System.out.println();
-				printIndent(d);
-				System.out.println("***************Inspection for field " + field.getName() + " with type "
-				+ field.getType() + " ***************");
-				Class fieldClass = value.getClass();
-				inspectClass(fieldClass, value, recursive, d);
-				System.out.println();
-				printIndent(d);
-				System.out.println("***************Finished Inspection for field " + field.getName()+ "***************\n");
+				if (!map.containsKey(value)) {
+					System.out.println();
+					printIndent(d);
+					System.out.println("***************Inspection for field " + field.getName() + " with type "
+							+ field.getType() + " ***************");
+					Class fieldClass = value.getClass();
+					inspectClass(fieldClass, value, recursive, d);
+					System.out.println();
+					printIndent(d);
+					System.out.println("***************Finished Inspection for field " + field.getName()+ "***************\n");
+				} else {
+					printIndent(d);
+			    	System.out.println("This object has been visited before!");
+			    }	
 			}
 		
 		} else {
