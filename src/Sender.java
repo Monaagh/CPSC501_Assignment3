@@ -74,11 +74,11 @@ public class Sender {
 	}
 	
 	public static void serilizeObjectList(ArrayList<Object> objectList) throws Exception {
-		Document doc;
+		Document document;
 		for (int i=0; i< objectList.size(); i++) {
-			doc = new Serializer().serialize(objectList.get(i));
+			document = new Serializer().serialize(objectList.get(i));
 			String filename = "senderFile" + String.valueOf(i) + ".xml"; 
-			printOutput(doc, filename);
+			printOutput(document, filename);
 			
 		}
 	}

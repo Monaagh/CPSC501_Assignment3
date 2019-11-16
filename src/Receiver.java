@@ -1,5 +1,7 @@
 import java.io.*;
 import java.net.*;
+import org.jdom2.Document;
+import org.jdom2.input.SAXBuilder;
 
 public class Receiver {
 	public static void main(String args[]) throws IOException {
@@ -26,20 +28,27 @@ public class Receiver {
             String fileName = "ReceiverFile" + count + ".xml";
             fos = new FileOutputStream(fileName);
             
-            byte[] buffer =new byte[8*1024];
+            byte[] buffer;
             int bytesRead;
             int fileLength = dataInBuffer.readInt();
+            buffer =new byte[fileLength];
             System.out.println("file length: " + fileLength);
             
             int fileBytesReceived = 0;
             while ((bytesRead = inBuffer.read(buffer)) >0) {
             	fileBytesReceived += bytesRead;
 		    	fos.write(buffer, 0, bytesRead);
-		    	
+		    	System.out.println("file bytes recieved: " + fileBytesReceived);
 		    	if (fileBytesReceived  == fileLength) {
 		    		fos.close();
+		    		System.out.println("XML file recieved over the network!");
+					System.out.println("*********************************************");
+		    		deserializeDocument(fileName);
+		    		System.out.println("Deserialization of the recieved XML document finished!");
+					System.out.println("*********************************************");
 		    		count++;
 		    		fileLength = dataInBuffer.readInt();
+		    		buffer =new byte[fileLength];
 		            System.out.println("file length: " + fileLength);
 		            fileName = "ReceiverFile" + count + ".xml";
 		    		fos = new FileOutputStream(fileName);
@@ -58,5 +67,22 @@ public class Receiver {
         echoServer.close();
         
         
+	}
+	
+	public static void deserializeDocument(String fileName) {
+		
+		try {
+			File inputFile = new File(fileName);
+			SAXBuilder saxBuilder = new SAXBuilder();
+			Document document = saxBuilder.build(inputFile);
+			Object object = new Deserializer().deserialize(document);
+			new Inspector().inspect(object, false);
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		
+		
 	}
 }

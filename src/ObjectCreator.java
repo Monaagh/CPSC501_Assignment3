@@ -1,6 +1,7 @@
 import java.io.*; 
 
 public class ObjectCreator {
+	private static String inputCommand;
 	private static String input;
 	BufferedReader inFromUser;
 	public ObjectCreator() {
@@ -25,14 +26,14 @@ public class ObjectCreator {
 		System.out.println("1. Yes ");
 		System.out.println("2. No ");
 		
-		input = inFromUser.readLine(); 
+		inputCommand = inFromUser.readLine(); 
 		
 		while (true) {
-			if (input.equals("1")) {
+			if (inputCommand.equals("1")) {
 				Integer param1;
 				Double param2; 
 				Boolean param3;
-				System.out.println("Eter an integer for parameter 1:");
+				System.out.println("Enter an integer for parameter 1:");
 				input = inFromUser.readLine(); 
 				while (true ){
 					try {
@@ -45,7 +46,7 @@ public class ObjectCreator {
 					}
 				}
 				
-				System.out.println("Eter a double for parameter 2:");
+				System.out.println("Enter a double for parameter 2:");
 				input = inFromUser.readLine(); 
 				while (true ){
 					try {
@@ -58,7 +59,7 @@ public class ObjectCreator {
 					}
 				}
 				
-				System.out.println("Eter a boolean for parameter 3:");
+				System.out.println("Enter a boolean for parameter 3:");
 				input = inFromUser.readLine(); 
 				
 				while (true ){					
@@ -73,7 +74,7 @@ public class ObjectCreator {
 				
 				object = new SimpleObject(param1, param2, param3);
 				break;
-			} else if (input.equals("2")) {
+			} else if (inputCommand.equals("2")) {
 				object = new SimpleObject();
 				break;
 			} else {
@@ -93,15 +94,15 @@ public class ObjectCreator {
 		System.out.println("1. Yes ");
 		System.out.println("2. No ");
 		
-		input = inFromUser.readLine(); 
+		inputCommand = inFromUser.readLine(); 
 		
 		while (true) {
-			if (input.equals("1")) {
+			if (inputCommand.equals("1")) {
 				Integer param1;
 				Double param2; 
 				
 				
-				System.out.println("Eter an integer for Object A:");
+				System.out.println("Enter an integer for Object A:");
 				input = inFromUser.readLine(); 
 				while (true ){
 					try {
@@ -114,7 +115,7 @@ public class ObjectCreator {
 					}
 				}
 				
-				System.out.println("Eter a double for  Object B:");
+				System.out.println("Enter a double for  Object B:");
 				input = inFromUser.readLine(); 
 				while (true ){
 					try {
@@ -131,8 +132,9 @@ public class ObjectCreator {
 				RefObjectB b = new RefObjectB(param2);
 				
 				refObject = new RefObject(a,b);
+				break;
 				
-			} else if (input.equals("2")) {
+			} else if (inputCommand.equals("2")) {
 			
 				refObject = new RefObject();
 				break;
@@ -154,10 +156,10 @@ public class ObjectCreator {
 		System.out.println("1. Yes ");
 		System.out.println("2. No ");
 		
-		input = inFromUser.readLine();
+		inputCommand = inFromUser.readLine();
 		
 		while (true) {
-			if (input.equals("1")) {
+			if (inputCommand.equals("1")) {
 				int length = 0;
 				int index = 0;
 				int[] array;
@@ -175,7 +177,7 @@ public class ObjectCreator {
 				}
 			
 				while (index < length) {
-					System.out.println("Enter next element in array");
+					System.out.println("Enter element #" + index+ " in array");
 					input = inFromUser.readLine();
 					while (true ){
 						try {
@@ -192,7 +194,7 @@ public class ObjectCreator {
 				object = new ArrayObject(array);
 				break;
 				
-			} else if (input.equals("2")) {
+			} else if (inputCommand.equals("2")) {
 				object = new ArrayObject();
 				break;
 			} else {
@@ -215,10 +217,10 @@ public class ObjectCreator {
 		System.out.println("1. Yes ");
 		System.out.println("2. No ");
 		
-		input = inFromUser.readLine();
+		inputCommand = inFromUser.readLine();
 		
 		while (true) {
-			if (input.equals("1")) {
+			if (inputCommand.equals("1")) {
 				int length = 0;
 				int index = 0;
 				SimpleObject[] simpleObject;
@@ -242,7 +244,7 @@ public class ObjectCreator {
 				object = new ArrayRefObject(simpleObject);
 				break;
 				
-			} else if (input.equals("2")) {
+			} else if (inputCommand.equals("2")) {
 				object = new ArrayRefObject();
 				break;
 			} else {

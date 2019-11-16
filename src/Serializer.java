@@ -26,7 +26,7 @@ public class Serializer {
 	public void serializeObject(Object obj, Class classObject) {
 		System.out.println("Object name: " + obj.getClass().getName());
 		//System.out.println("Class name: " + classObject.getName());
-		id = obj.hashCode();
+		id = map.size();
 		if (!map.containsKey(obj)) {
 			//System.out.println("The object is not visited");
 			//System.out.println(map.containsKey(id));
@@ -68,6 +68,7 @@ public class Serializer {
 						//map.put(id, elementReference);
 						if (elementReference != null) {
 							Element arrayElementReference = new Element("refrence");
+							id = map.size();
 							arrayElementReference.setText(String.valueOf(id));
 					
 							objectElement.addContent(arrayElementReference);
@@ -114,7 +115,7 @@ public class Serializer {
 				objectElement.addContent(fieldElement);
 			} else {
 				Element reference = new Element("reference");
-				id = fieldValueObject.hashCode();
+				id = map.size();
 				//map.put(id, fieldValueObject);
 				reference.setText(String.valueOf(id));
 				fieldElement.addContent(reference);
