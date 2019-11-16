@@ -15,56 +15,50 @@ public class TestSerializer {
 		outputter.setFormat(Format.getPrettyFormat());
 	}
 	
-	/*@Test
-	public void testSimpleObject(){
+	@Test
+	public void testSimpleObject() throws IOException{
 		SimpleObject so = new SimpleObject();
 		Serializer sr = new Serializer();
 		Document doc = sr.serialize(so);
-		new Sender().printOutput(doc);
+		outputter.output(doc, System.out);
 		
 	}
 	
 	@Test
-	public void testSimpleObjectwithParameter(){
+	public void testSimpleObjectwithParameter() throws IOException{
 		SimpleObject obj = new SimpleObject(45, 50.2, false);
 		Serializer sr = new Serializer();
 		Document doc = sr.serialize(obj);
-		new Sender().printOutput(doc);
+		outputter.output(doc, System.out);
 		
 	}
 	
 	@Test
-	public void testRefObject() {
+	public void testRefObject() throws IOException {
 		RefObject obj = new RefObject();
 		Serializer sr = new Serializer();
 		Document doc = sr.serialize(obj);
-		new Sender().printOutput(doc);
+		outputter.output(doc, System.out);
 	}
 	
 	@Test
-	public void testRefObjectWithParameter() {
-		SimpleObject simpleObj = new SimpleObject(45, 50.2, false);
-		RefObject obj = new RefObject(simpleObj);
+	public void testRefObjectWithParameter() throws IOException {
+		RefObjectA a = new RefObjectA();
+		RefObjectB b = new RefObjectB();
+		RefObject obj = new RefObject(a, b);
 		Serializer sr = new Serializer();
 		Document doc = sr.serialize(obj);
-		new Sender().printOutput(doc);
-	}*/
+		outputter.output(doc, System.out);
+	}
 	
-	/*@Test
+	@Test
 	public void testArrayObject() throws IOException {
 		ArrayObject obj = new ArrayObject();
 		Serializer sr = new Serializer();
 		Document doc = sr.serialize(obj);
 		outputter.output(doc, System.out);
-	}*/
-	/*@Test
-	public void testRefObject() {
-		RefObject obj = new RefObject();
-		//obj.setCircularRefObject();
-		Serializer sr = new Serializer();
-		Document doc = sr.serialize(obj);
-		//new Sender().printOutput(doc);
-	}*/
+	}
+
 	
 	@Test
 	public void testCollectionObject() throws IOException {
@@ -75,13 +69,12 @@ public class TestSerializer {
 		outputter.output(doc, System.out);
 	}
 	
-	
-	/*
+
 	@Test
-	public void testArrayRefObject() {
+	public void testArrayRefObject() throws IOException {
 		ArrayRefObject obj = new ArrayRefObject();
 		Serializer sr = new Serializer();
 		Document doc = sr.serialize(obj);
-		new Sender().printOutput(doc);
-	}*/
+		outputter.output(doc, System.out);
+	}
 }
