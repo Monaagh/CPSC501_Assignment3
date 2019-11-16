@@ -84,30 +84,26 @@ public class Inspector {
 			
 			Object arrayElement = Array.get(obj,  i);	
 			System.out.print(arrayElement + " ");
-			
 			//if array elements is not null and 
-			if (arrayElement != null) {
-				if (recursive) {
-					
-					Class arrayElementClass = arrayElement.getClass();
-					
-					if (!map.containsKey(arrayElement)) {
-						if (!arrayElementClass.equals(java.lang.Character.class)) {
-					
+			if (!c.getComponentType().isPrimitive()) {
+				if (arrayElement != null) {
+					if (recursive) {
+						Class arrayElementClass = arrayElement.getClass();
+
+						if (!map.containsKey(arrayElement)) {					
 							System.out.println();
 							printIndent(d);
 							System.out.println("***************Inspection for element " + i + ": "+ arrayElementClass.getName() + " with type "
-									+ arrayElementClass + " ***************");
+								+ arrayElementClass + " ***************");
 						
-							inspectClass(arrayElementClass, arrayElement, recursive, d);
-						
+							inspectClass(arrayElementClass, arrayElement, recursive, d);						
 							System.out.println();
 							printIndent(d);
 							System.out.println("***************Finished Inspection for element " + i + ": "+ arrayElement.getClass().getName()+ "***************\n");
+						} else {
+							printIndent(d);
+							System.out.println("This object has been visited before!");
 						}
-					} else {
-						printIndent(d);
-						System.out.println("This object has been visited before!");
 					}
 				}
 			}
@@ -284,7 +280,7 @@ public class Inspector {
    					inspectFieldObject(recursive, d, field, value);
    				}
     		} else {
-    			
+ 
     			field.setAccessible(true);
     			inspectArray(value.getClass(), value, recursive, depth, d );	
     			System.out.println();		

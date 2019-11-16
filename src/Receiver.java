@@ -32,13 +32,11 @@ public class Receiver {
             int bytesRead;
             int fileLength = dataInBuffer.readInt();
             buffer =new byte[fileLength];
-            System.out.println("file length: " + fileLength);
             
             int fileBytesReceived = 0;
             while ((bytesRead = inBuffer.read(buffer)) >0) {
             	fileBytesReceived += bytesRead;
 		    	fos.write(buffer, 0, bytesRead);
-		    	System.out.println("file bytes recieved: " + fileBytesReceived);
 		    	if (fileBytesReceived  == fileLength) {
 		    		fos.close();
 		    		System.out.println("XML file recieved over the network!");
@@ -49,7 +47,6 @@ public class Receiver {
 		    		count++;
 		    		fileLength = dataInBuffer.readInt();
 		    		buffer =new byte[fileLength];
-		            System.out.println("file length: " + fileLength);
 		            fileName = "ReceiverFile" + count + ".xml";
 		    		fos = new FileOutputStream(fileName);
 		            fileBytesReceived = 0;
@@ -76,7 +73,7 @@ public class Receiver {
 			SAXBuilder saxBuilder = new SAXBuilder();
 			Document document = saxBuilder.build(inputFile);
 			Object object = new Deserializer().deserialize(document);
-			new Inspector().inspect(object, true);
+			new Inspector().inspect(object,true);
 			
 		} catch (Exception e) {
 			System.out.println(e);

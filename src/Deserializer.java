@@ -25,13 +25,11 @@ public class Deserializer {
 		Class classObject = null;
 		for (Element objectElement: objectElementList) {
 			attribute = objectElement.getAttribute("class");
-			//String className = objectElement.getAttributeValue(attribute.getName());
 			String className = attribute.getValue();
 			
 			try {
 				classObject = Class.forName(className);
 			} catch (ClassNotFoundException e) {
-				System.out.println("Error happens here");
 				System.out.println(e);
 			}
 			
@@ -53,7 +51,6 @@ public class Deserializer {
 			attribute = objectElement.getAttribute("id"); 
 			int id = Integer.parseInt(objectElement.getAttributeValue(attribute.getName()));
 			map.put(id, object);
-			System.out.println("(id, object): " + id +  object.getClass().getName());
 		}
 	}
 	
@@ -69,15 +66,10 @@ public class Deserializer {
 			
 			attribute = objectElement.getAttribute("id"); 
 			int id = Integer.parseInt(objectElement.getAttributeValue(attribute.getName()));
-			//System.out.println("id of the object" + id);
 			object = map.get(id);
-			//System.out.println("object: " + object);
 			classObject = object.getClass();
-			//System.out.println("class: " + classObject);
-			
-			
+		
 			if (!classObject.isArray()) {
-				//System.out.println("not array");
 				List<Element> objectFieldList = objectElement.getChildren();
 				
 				for (Element fieldElement: objectFieldList) {
@@ -85,7 +77,7 @@ public class Deserializer {
 					String fieldDeclaringClass = fieldElement.getAttributeValue(attribute.getName());
 					try {
 						declaringClassObject = Class.forName(fieldDeclaringClass);
-						System.out.println("declaringClassObject" + declaringClassObject);
+						//System.out.println("declaringClassObject" + declaringClassObject);
 					} catch (ClassNotFoundException e) {
 						System.out.println(e);
 					}
@@ -143,15 +135,13 @@ public class Deserializer {
 					}
 				} else {
 					for (int i=0; i<objectArrayComponents.size(); i++) {
-						System.out.println("inside the second forloop");
+						
 						Element component = objectArrayComponents.get(i);
 						int componentReferenceID = Integer.parseInt(component.getText()); 
 						//int componentReferenceID = Integer.parseInt(component.getAttributeValue(attribute.getName()));
 						
 						Object referenceObject = map.get(componentReferenceID);
-						System.out.println("array element object: " + referenceObject);
 						if (referenceObject != null) {
-							System.out.println("inside the null statement");
 							Array.set(object, i, referenceObject);
 						}
 						

@@ -24,7 +24,7 @@ public class Sender {
 		
 		
 		// Initialize a client socket connection to the server
-	    clientSocket = new Socket("10.13.128.137", 9000); 
+	    clientSocket = new Socket("localhost", 9000); 
 	    outBuffer = clientSocket.getOutputStream();
 	    dataOutBuffer = new DataOutputStream(outBuffer);
 		
