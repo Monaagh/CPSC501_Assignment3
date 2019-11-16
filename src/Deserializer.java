@@ -69,15 +69,15 @@ public class Deserializer {
 			
 			attribute = objectElement.getAttribute("id"); 
 			int id = Integer.parseInt(objectElement.getAttributeValue(attribute.getName()));
-			System.out.println("id of the object" + id);
+			//System.out.println("id of the object" + id);
 			object = map.get(id);
-			System.out.println("object: " + object);
+			//System.out.println("object: " + object);
 			classObject = object.getClass();
-			System.out.println("class: " + classObject);
+			//System.out.println("class: " + classObject);
 			
 			
 			if (!classObject.isArray()) {
-				System.out.println("not array");
+				//System.out.println("not array");
 				List<Element> objectFieldList = objectElement.getChildren();
 				
 				for (Element fieldElement: objectFieldList) {
@@ -114,30 +114,9 @@ public class Deserializer {
 					if (field.getType().isPrimitive()) {
 						Element fieldValueElement = fieldElement.getChildren().get(0);
 						String fieldValue = fieldValueElement.getText();
-						System.out.println("Value of field: " + fieldValue);
 						
+						setField(field, object, fieldValue);
 						
-						try {
-							if (field.getType().equals(byte.class)) {
-								field.setByte(object, Byte.valueOf(fieldValue));
-							} else if (field.getType().equals(char.class)){
-								field.setChar(object, new Character(fieldValue.charAt(0)));
-							} else if (field.getType().equals(double.class)){
-								field.setDouble(object, Double.valueOf(fieldValue));
-							} else if (field.getType().equals(float.class)){
-								field.setFloat(object, Float.valueOf(fieldValue));
-							} else if (field.getType().equals(int.class)){
-								field.setInt(object, Integer.valueOf(fieldValue));
-							} else if (field.getType().equals(long.class)){
-								field.setLong(object, Long.valueOf(fieldValue));
-							} else if (field.getType().equals(short.class)){
-								field.setShort(object, Short.valueOf(fieldValue));
-							} else if (field.getType().equals(boolean.class)){
-								field.setBoolean(object, Boolean.valueOf(fieldValue));
-							}
-						} catch (Exception e) {
-							System.out.println(e);
-						}
 					} else {
 						Element reference = fieldElement.getChildren().get(0);
 						int referenceId = Integer.valueOf(reference.getText());
@@ -153,41 +132,14 @@ public class Deserializer {
 					}	
 				}
 			} else {
-				System.out.println("array");
 				List<Element> objectArrayComponents = objectElement.getChildren();
 				//Class arrayType = classObject.getComponentType();
 				
 				if (classObject.getComponentType().isPrimitive()) {
-					System.out.println("inside if");
 					for (int i=0; i<objectArrayComponents.size(); i++) {
-						System.out.println("inside for loop");
 						Element component = objectArrayComponents.get(i);
 						String componentValue = component.getText(); 
-						//String componentValue = component.getAttributeValue(attribute.getName());
-						System.out.println("Component value: " + componentValue);
-						//Array.set(classObject, i, );
-						//TO DO: set array component based on type of primitive
-						try {
-							if (classObject.getComponentType().equals(byte.class)) {
-								Array.setByte(object, i, Byte.valueOf(componentValue));
-							} else if (classObject.getComponentType().equals(char.class)){
-								Array.setChar(object, i, new Character(componentValue.charAt(0)));
-							} else if (classObject.getComponentType().equals(double.class)){
-								Array.setDouble(object, i, Double.valueOf(componentValue));
-							} else if (classObject.getComponentType().equals(float.class)){
-								Array.setFloat(object, i, Float.valueOf(componentValue));
-							} else if (classObject.getComponentType().equals(int.class)){
-								Array.setInt(object, i, Integer.valueOf(componentValue));
-							} else if (classObject.getComponentType().equals(long.class)){
-								Array.setLong(object, i, Long.valueOf(componentValue));
-							} else if (classObject.getComponentType().equals(short.class)){
-								Array.setShort(object, i, Short.valueOf(componentValue));
-							} else if (classObject.getComponentType().equals(boolean.class)){
-								Array.setBoolean(object, i, Boolean.valueOf(componentValue));
-							}
-						} catch (Exception e) {
-							System.out.println(e);
-						}
+						setArrayComponent(object, classObject, i, componentValue);
 					}
 				} else {
 					for (int i=0; i<objectArrayComponents.size(); i++) {
@@ -207,5 +159,53 @@ public class Deserializer {
 				}
 			}
 		}	
+	}
+
+	public void setArrayComponent(Object object, Class classObject, int i, String componentValue) {
+		try {
+			if (classObject.getComponentType().equals(byte.class)) {
+				Array.setByte(object, i, Byte.valueOf(componentValue));
+			} else if (classObject.getComponentType().equals(char.class)){
+				Array.setChar(object, i, new Character(componentValue.charAt(0)));
+			} else if (classObject.getComponentType().equals(double.class)){
+				Array.setDouble(object, i, Double.valueOf(componentValue));
+			} else if (classObject.getComponentType().equals(float.class)){
+				Array.setFloat(object, i, Float.valueOf(componentValue));
+			} else if (classObject.getComponentType().equals(int.class)){
+				Array.setInt(object, i, Integer.valueOf(componentValue));
+			} else if (classObject.getComponentType().equals(long.class)){
+				Array.setLong(object, i, Long.valueOf(componentValue));
+			} else if (classObject.getComponentType().equals(short.class)){
+				Array.setShort(object, i, Short.valueOf(componentValue));
+			} else if (classObject.getComponentType().equals(boolean.class)){
+				Array.setBoolean(object, i, Boolean.valueOf(componentValue));
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+	public void setField(Field field, Object object, String fieldValue) {
+		try {
+			if (field.getType().equals(byte.class)) {
+				field.setByte(object, Byte.valueOf(fieldValue));
+			} else if (field.getType().equals(char.class)){
+				field.setChar(object, new Character(fieldValue.charAt(0)));
+			} else if (field.getType().equals(double.class)){
+				field.setDouble(object, Double.valueOf(fieldValue));
+			} else if (field.getType().equals(float.class)){
+				field.setFloat(object, Float.valueOf(fieldValue));
+			} else if (field.getType().equals(int.class)){
+				field.setInt(object, Integer.valueOf(fieldValue));
+			} else if (field.getType().equals(long.class)){
+				field.setLong(object, Long.valueOf(fieldValue));
+			} else if (field.getType().equals(short.class)){
+				field.setShort(object, Short.valueOf(fieldValue));
+			} else if (field.getType().equals(boolean.class)){
+				field.setBoolean(object, Boolean.valueOf(fieldValue));
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 }
